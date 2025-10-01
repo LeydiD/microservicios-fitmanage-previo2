@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
   db:
     image: mysql:8
@@ -19,41 +17,62 @@ services:
       retries: 5
 
   usuarios-service:
-    build: ./usuarios-service
+    build: 
+      context: ./usuarios-service
+      dockerfile: Dockerfile
     container_name: usuarios_service
     restart: always
     env_file:
       - ./usuarios-service/.env
     ports:
-      - "3001:3000"
+      - "4001:4001"
     depends_on:
       db:
         condition: service_healthy
 
   afiliaciones-service:
-    build: ./afiliaciones-service
+    build: 
+      context: ./afiliaciones-service
+      dockerfile: Dockerfile
     container_name: afiliaciones_service
     restart: always
     env_file:
       - ./afiliaciones-service/.env
     ports:
-      - "3002:3000"
+      - "4002:4002"
     depends_on:
       db:
         condition: service_healthy
 
-
   notificaciones-service:
-    build: ./notificaciones-service
+    build: 
+      context: ./notificaciones-service
+      dockerfile: Dockerfile
     container_name: notificaciones_service
     restart: always
     env_file:
       - ./notificaciones-service/.env
     ports:
-      - "3003:3000"
+      - "4005:4005"
     depends_on:
       db:
         condition: service_healthy
 
+  frontend:
+    build: 
+      context: ./FitManageFront
+      dockerfile: Dockerfile
+
+    container_name: fitmanage_frontend
+    restart: always
+    ports:
+      - "5173:5173"  
+    depends_on:
+      - usuarios-service
+      - afiliaciones-service
+      - notificaciones-service
+    stdin_open: true
+    tty: true
+    
 volumes:
   mysql_data:
