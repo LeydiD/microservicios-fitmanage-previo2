@@ -58,21 +58,31 @@ services:
       db:
         condition: service_healthy
 
-  frontend:
+  gateway:
     build: 
-      context: ./FitManageFront
+      context: ./api-gateway
       dockerfile: Dockerfile
-
-    container_name: fitmanage_frontend
+    container_name: fitmanage_gateway
     restart: always
     ports:
-      - "5173:5173"  
+      - "4000:4000"
     depends_on:
       - usuarios-service
       - afiliaciones-service
       - notificaciones-service
+
+  frontend:
+    build: 
+      context: ./FitManageFront
+      dockerfile: Dockerfile
+    container_name: fitmanage_frontend
+    restart: always
+    ports:
+      - "5173:5173"
+    depends_on:
+      - gateway
     stdin_open: true
     tty: true
-    
+
 volumes:
   mysql_data:

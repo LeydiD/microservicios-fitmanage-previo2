@@ -29,7 +29,7 @@ export async function testConnection() {
 // Función para crear tablas
 export async function createTables() {
   try {
-    await db.sync({ alter: true }); // alter: true actualiza tablas existentes
+    await db.sync({ alter: false }); // alter: true actualiza tablas existentes
     console.log("Tablas sincronizadas correctamente.");
   } catch (error) {
     console.error("Error al sincronizar tablas:", error);

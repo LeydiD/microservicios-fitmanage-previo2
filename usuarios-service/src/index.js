@@ -5,6 +5,7 @@ import cors from "cors";
 import db from "./db/db.js";
 import clienteRoutes from "./routes/ClienteRoutes.js";
 import Administrador from "./models/Administrador.js";
+import authRoutes from "./routes/AuthRoutes.js";
 
 dotenv.config({
     path: "./.env",
@@ -26,7 +27,7 @@ db.sync()
 
 async function main() {
     try {
-        await db.sync({ force: true });
+        await db.sync({ force: false });
         console.log("Tablas creadas exitosamente B)")
     } catch (error) {
         console.log(error.message);
@@ -57,3 +58,4 @@ app.listen(process.env.PORT, () => {
 
 
 app.use("/clientes", clienteRoutes);
+app.use("/auth", authRoutes);
