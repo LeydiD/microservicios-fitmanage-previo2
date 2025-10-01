@@ -1,8 +1,18 @@
 require('dotenv').config();
 const express = require('express');
+const cors = require('cors');
 const { createProxyMiddleware } = require('http-proxy-middleware');
+
 const app = express();
 const port = process.env.PORT || 3000;
+
+
+app.use(cors({
+  origin: "http://localhost:5173",
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
+}));
+
 
 const USERS = process.env.USUARIOS_URL || 'http://localhost:4001';
 const AFI   = process.env.AFILIACIONES_URL || 'http://localhost:4002';

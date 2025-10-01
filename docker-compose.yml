@@ -71,11 +71,11 @@ services:
       - afiliaciones-service
       - notificaciones-service
 
-  frontend:
+  frontend1:
     build: 
       context: ./FitManageFront
       dockerfile: Dockerfile
-    container_name: fitmanage_frontend
+    container_name: fitmanage_frontend1
     restart: always
     ports:
       - "5173:5173"
