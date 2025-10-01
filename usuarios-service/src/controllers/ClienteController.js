@@ -1,8 +1,8 @@
 import {
   listar as listarClientes, buscarPorCedula as buscarPCedula,
-  registrarCliente as registrarCliente, actualizarCliente as actualizarClienteS, actualizarContraseña as actualizarContraseñaCliente, buscarClienteDias, fechaFinSuscripcion
+  registrarCliente as registrarCliente, actualizarCliente as actualizarClienteS, actualizarContraseña as actualizarContraseñaCliente
 } from "../services/ClienteServices.js";
-import { enviarCorreo } from "../services/EmailService.js";
+import axios from "axios";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import dotenv from "dotenv";
@@ -51,10 +51,10 @@ export async function registrar(req, res) {
     const token = jwt.sign({ DNI }, process.env.JWT_SECRET, { expiresIn: "72h" });
     const link = `${process.env.FRONTEND_URL}/crear-contrasena/${token}`;
 
-    await enviarCorreo(
-      email,
-      "Crea tu contraseña",
-      `
+    await axios.post(`${process.env.NOTIFICACIONES_URL}/notificaciones/email`, {
+      destinatario: email,
+      asunto: "Crea tu contraseña",
+      mensaje: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px; background-color: #f9f9f9;">
           <h2 style="color: #333;">Hola ${nombre},</h2>
           <p style="font-size: 16px; color: #555;">
@@ -80,13 +80,13 @@ export async function registrar(req, res) {
           </p>
         </div>
       `
-    );
+    });
     res.status(201).json(nuevoCliente);
   } catch (error) {
     console.error("Error al registrar cliente:", error);
     res.status(500).json({ message: "Error interno del servidor" });
   }
-}
+};
 
 
 export async function actualizarCliente(req, res) {
@@ -125,25 +125,3 @@ export async function crearContraseña(req, res) {
   }
 }
 
-export async function clienteConDias(req, res) {
-  try {
-    console.log("DNI recibido en body:", req.params.DNI);
-    const cliente = await buscarClienteDias(req.params.DNI);
-    res.status(200).json(cliente);
-  } catch (error) {
-    res.status(error.statusCode || 500).json({
-            message: error.message || "Error interno del servidor",
-          });
-  }
-}
-
-export async function obtenerFechaFinSuscripcion(req, res) {
-  try {
-    const fecha = await fechaFinSuscripcion(req.params.DNI);
-    res.status(200).json(fecha);
-  } catch (error) {
-    res.status(error.statusCode || 500).json({
-            message: error.message || "Error interno del servidor",
-          });
-  }
-}

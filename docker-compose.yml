@@ -1,0 +1,59 @@
+version: "3.9"
+
+services:
+  db:
+    image: mysql:8
+    container_name: fitmanage_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: fitmanage
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  usuarios-service:
+    build: ./usuarios-service
+    container_name: usuarios_service
+    restart: always
+    env_file:
+      - ./usuarios-service/.env
+    ports:
+      - "3001:3000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  afiliaciones-service:
+    build: ./afiliaciones-service
+    container_name: afiliaciones_service
+    restart: always
+    env_file:
+      - ./afiliaciones-service/.env
+    ports:
+      - "3002:3000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+
+  notificaciones-service:
+    build: ./notificaciones-service
+    container_name: notificaciones_service
+    restart: always
+    env_file:
+      - ./notificaciones-service/.env
+    ports:
+      - "3003:3000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  mysql_data:
