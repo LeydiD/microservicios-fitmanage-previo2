@@ -14,11 +14,11 @@ app.use(cors({
 }));
 
 
-const USERS = process.env.USUARIOS_URL || 'http://localhost:4001';
-const AFI   = process.env.AFILIACIONES_URL || 'http://localhost:4002';
-const ASIS  = process.env.ASISTENCIAS_URL || 'http://localhost:4003';
-const RUT   = process.env.RUTINAS_URL || 'http://localhost:4004';
-const NOTI  = process.env.NOTIFICACIONES_URL || 'http://localhost:4005';
+const USERS = process.env.USUARIOS_URL || 'http://usuarios_service:4001';
+const AFI   = process.env.AFILIACIONES_URL || 'http://afiliaciones_service:4002';
+const ASIS  = process.env.ASISTENCIAS_URL || 'http://asistencias_service:4003';
+const RUT   = process.env.RUTINAS_URL || 'http://rutinas_service:4004';
+const NOTI  = process.env.NOTIFICACIONES_URL || 'http://notificaciones_service:4005';
 
 app.use('/api/usuarios', createProxyMiddleware({ target: USERS, changeOrigin: true, pathRewrite: {'^/api/usuarios':'/usuarios'} }));
 app.use('/api/membresias', createProxyMiddleware({ target: AFI, changeOrigin: true, pathRewrite: {'^/api/membresias':'/membresias'} }));
