@@ -43,6 +43,7 @@ export async function registrar(req, res) {
     }
 
     const clienteExistente = await buscarPCedula(DNI);
+    console.log("Cliente existente:", clienteExistente);
     if (clienteExistente) {
       return res.status(400).json({ message: "El cliente ya está registrado" });
     }

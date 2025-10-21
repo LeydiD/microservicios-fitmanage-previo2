@@ -65,7 +65,7 @@ services:
     container_name: fitmanage_gateway
     restart: always
     ports:
-      - "4000:4000"
+      - "4000:3000"
     depends_on:
       - usuarios-service
       - afiliaciones-service

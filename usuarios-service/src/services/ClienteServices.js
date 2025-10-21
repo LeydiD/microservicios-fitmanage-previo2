@@ -1,7 +1,7 @@
 import cliente from "../models/Cliente.js";
 
 export async function buscarPorCedula(dni) {
-    return await cliente.findByPk(dni);
+    return cliente.findOne({ where: { dni } });
 }
 
 export async function registrarCliente(datosCliente) {
@@ -35,7 +35,7 @@ export async function actualizarContraseña(dni, contraseñaHasheada) {
 
 
 export async function listar() {
-  return await cliente.findAll({
-    attributes: ["DNI", "nombre", "email", "telefono"], 
-  });
+    return await cliente.findAll({
+        attributes: ["DNI", "nombre", "email", "telefono"],
+    });
 }
