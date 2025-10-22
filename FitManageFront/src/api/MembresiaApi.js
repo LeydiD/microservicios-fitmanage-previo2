@@ -1,5 +1,5 @@
 const API_URL = import.meta.env.VITE_BACKEND_URL;
-const API_URL_MEMBRESIAS = `${API_URL}/membresias`;
+const API_URL_MEMBRESIAS = `${API_URL}/afiliaciones/membresias`;
 
 export async function obtenerMembresias() {
   try {
@@ -60,12 +60,14 @@ export async function actualizarMembresia(id_membresia, membresia) {
   }
 }
 
-
 export async function desactivarMembresia(id_membresia) {
   try {
-    const response = await fetch(`${API_URL_MEMBRESIAS}/desactivar/${id_membresia}`, {
-      method: "PUT"
-    });
+    const response = await fetch(
+      `${API_URL_MEMBRESIAS}/desactivar/${id_membresia}`,
+      {
+        method: "PUT",
+      }
+    );
 
     if (!response.ok) {
       throw new Error("Error al desactivar la membresía");
