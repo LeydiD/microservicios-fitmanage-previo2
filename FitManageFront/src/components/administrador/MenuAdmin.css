@@ -1,0 +1,330 @@
+.admin-menu {
+  width: 250px;
+  background: linear-gradient(to bottom, #1a1a1a, #0f0f0f);
+  color: white;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
+}
+.admin-profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  position: relative;
+  width: 100%;
+}
+
+.admin-avatar {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  border: 3px solid #ffffff;
+  object-fit: cover;
+  background: #fff;
+  z-index: 3;
+  position: relative;
+}
+
+.avatar-container {
+  position: relative;
+  width: 130px;
+  height: 130px;
+  margin: 0 auto;
+}
+
+.avatar-circle-selector {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  min-width: 130px;
+  min-height: 130px;
+  pointer-events: none; /* para que solo los hijos reciban eventos */
+}
+
+.avatar-option-circle {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  object-fit: cover;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  cursor: pointer;
+  transition: border 0.2s, transform 0.2s;
+  pointer-events: auto;
+}
+
+.avatar-option-circle.selected {
+  border: 2px solid #d60000;
+  transform: scale(1.1);
+}
+
+.avatar-option-circle-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  cursor: pointer;
+  transition: border 0.2s, transform 0.2s;
+  pointer-events: auto;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar-option-circle-btn.selected,
+.avatar-option-circle-btn:focus {
+  border: 2px solid #d60000;
+  transform: scale(1.1);
+  outline: none;
+}
+
+.avatar-option-circle-btn img {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
+
+.avatar-circle-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: none;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  transition: background 0.2s, border 0.2s;
+  pointer-events: auto;
+  padding: 0;
+}
+
+.avatar-circle-btn.avatar-confirm {
+  background: #2ecc40;
+}
+
+.avatar-circle-btn.avatar-cancel:hover {
+  background: #a80000;
+}
+.avatar-circle-btn.avatar-confirm:hover {
+  background: #1eac2a;
+}
+
+.admin-name {
+  margin-top: 0.5rem;
+  font-weight: bold;
+  font-size: 1rem;
+  color: white;
+}
+
+.nombre-admin {
+  font-weight: bold;
+  text-align: center;
+  border-bottom: 2px solid #f74f4f;
+  padding-bottom: 5px;
+  width: 80%;
+  font-family: "Montserrat", sans-serif;
+  color: rgb(83, 93, 104);
+  font-size: 0.95rem;
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+  gap: 15px;
+}
+
+.menu a {
+  text-decoration: none;
+  width: 85%;
+}
+
+.menu button {
+  width: 100%;
+  background: #333333;
+  color: #ffffff;
+  border: none;
+  padding: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.menu button:hover {
+  background-color: #4fc3f7;
+  color: #0d0d0d;
+}
+
+.menu .active {
+  background-color: #0277bd !important;
+  color: white;
+}
+
+.logout-button {
+  margin-top: auto;
+  background-color: #d32f2f;
+  width: 80%;
+  padding: 10px;
+  border: none;
+  font-size: 14px;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  box-shadow: 0 2px 5px rgba(255, 82, 82, 0.3);
+  transition: background-color 0.3s ease;
+}
+
+.logout-button:hover {
+  background-color: #b71c1c;
+}
+
+.avatar-selector {
+  position: absolute;
+  top: 110%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+  padding: 16px 12px 8px 12px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.avatar-options {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.avatar-option {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: border 0.2s, transform 0.2s;
+  object-fit: cover;
+}
+
+.avatar-option.selected {
+  border: 2px solid #d60000;
+  transform: scale(1.1);
+}
+
+.avatar-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.avatar-cancel,
+.avatar-confirm {
+  background: #d60000;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar-confirm {
+  background: #2ecc40;
+}
+
+.avatar-cancel:hover {
+  background: #a80000;
+}
+.avatar-confirm:hover {
+  background: #1eac2a;
+}
+
+.admin-noti-edit {
+  position: absolute;
+  top: -30px;
+  right: 10px;
+  padding: 12px 18px 0 0;
+  z-index: 10;
+}
+
+@media (max-width: 768px) {
+  .admin-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px;
+    height: 100vh;
+    background: linear-gradient(to bottom, #1a1a1a, #0f0f0f);
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+    z-index: 999;
+  }
+
+  .admin-menu.open {
+    transform: translateX(0);
+  }
+
+  .admin-menu.closed {
+    transform: translateX(-100%);
+  }
+}
+
+/* Desktop (por defecto) */
+.avatar-container {
+  width: 130px;
+  height: 130px;
+}
+.admin-avatar {
+  width: 130px;
+  height: 130px;
+}
+.avatar-circle-selector {
+  min-width: 130px;
+  min-height: 130px;
+}
+
+/* Responsive (móvil) */
+@media (max-width: 478px) {
+  .avatar-container {
+    width: 100px;
+    height: 100px;
+  }
+  .admin-avatar {
+    width: 100px;
+    height: 100px;
+  }
+  .avatar-circle-selector {
+    min-width: 100px;
+    min-height: 100px;
+  }
+}

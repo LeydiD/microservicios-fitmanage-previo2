@@ -1,0 +1,13 @@
+// vite.config.js
+import { defineConfig } from "file:///C:/Users/DANIELA/FitManageFront/node_modules/vite/dist/node/index.js";
+import react from "file:///C:/Users/DANIELA/FitManageFront/node_modules/@vitejs/plugin-react/dist/index.mjs";
+var vite_config_default = defineConfig(({ mode }) => {
+  return {
+    plugins: [react()],
+    base: mode === "production" ? "https://leydid.github.io/FitManageFront/" : "/"
+  };
+});
+export {
+  vite_config_default as default
+};
+//# sourceMappingURL=data:application/json;base64,ewogICJ2ZXJzaW9uIjogMywKICAic291cmNlcyI6IFsidml0ZS5jb25maWcuanMiXSwKICAic291cmNlc0NvbnRlbnQiOiBbImNvbnN0IF9fdml0ZV9pbmplY3RlZF9vcmlnaW5hbF9kaXJuYW1lID0gXCJDOlxcXFxVc2Vyc1xcXFxEQU5JRUxBXFxcXEZpdE1hbmFnZUZyb250XCI7Y29uc3QgX192aXRlX2luamVjdGVkX29yaWdpbmFsX2ZpbGVuYW1lID0gXCJDOlxcXFxVc2Vyc1xcXFxEQU5JRUxBXFxcXEZpdE1hbmFnZUZyb250XFxcXHZpdGUuY29uZmlnLmpzXCI7Y29uc3QgX192aXRlX2luamVjdGVkX29yaWdpbmFsX2ltcG9ydF9tZXRhX3VybCA9IFwiZmlsZTovLy9DOi9Vc2Vycy9EQU5JRUxBL0ZpdE1hbmFnZUZyb250L3ZpdGUuY29uZmlnLmpzXCI7aW1wb3J0IHsgZGVmaW5lQ29uZmlnIH0gZnJvbSBcInZpdGVcIjtcclxuaW1wb3J0IHJlYWN0IGZyb20gXCJAdml0ZWpzL3BsdWdpbi1yZWFjdFwiO1xyXG5cclxuZXhwb3J0IGRlZmF1bHQgZGVmaW5lQ29uZmlnKCh7IG1vZGUgfSkgPT4ge1xyXG4gIHJldHVybiB7XHJcbiAgICBwbHVnaW5zOiBbcmVhY3QoKV0sXHJcbiAgICBiYXNlOlxyXG4gICAgICBtb2RlID09PSBcInByb2R1Y3Rpb25cIiA/IFwiaHR0cHM6Ly9sZXlkaWQuZ2l0aHViLmlvL0ZpdE1hbmFnZUZyb250L1wiIDogXCIvXCIsXHJcbiAgfTtcclxufSk7XHJcbiJdLAogICJtYXBwaW5ncyI6ICI7QUFBdVIsU0FBUyxvQkFBb0I7QUFDcFQsT0FBTyxXQUFXO0FBRWxCLElBQU8sc0JBQVEsYUFBYSxDQUFDLEVBQUUsS0FBSyxNQUFNO0FBQ3hDLFNBQU87QUFBQSxJQUNMLFNBQVMsQ0FBQyxNQUFNLENBQUM7QUFBQSxJQUNqQixNQUNFLFNBQVMsZUFBZSw2Q0FBNkM7QUFBQSxFQUN6RTtBQUNGLENBQUM7IiwKICAibmFtZXMiOiBbXQp9Cg==

@@ -1,0 +1,39 @@
+.cliente-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.cliente-container {
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  flex: 1;
+  height: 100%;
+  overflow: hidden;
+}
+
+.cliente-content {
+  background-color: #f9f9f9;
+  overflow-y: auto;
+}
+
+@media (max-width: 768px) {
+  .cliente-container {
+    position: relative;
+    grid-template-columns: 1fr;
+  }
+
+  .cliente-menu {
+    position: absolute;
+    left: 0;
+    width: 50%;
+    height: calc(100%);
+    z-index: 1001;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
+
+  .cliente-container.menu-open .cliente-menu {
+    transform: translateX(0);
+  }
+}

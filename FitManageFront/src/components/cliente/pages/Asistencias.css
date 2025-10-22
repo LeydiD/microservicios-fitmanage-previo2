@@ -1,0 +1,158 @@
+.calendar-container {
+  margin: 0 auto;
+  width: 85%;
+  padding: 20px;
+  font-family: "Arial", sans-serif;
+}
+
+.calendar-title {
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 15px;
+  color: #333;
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.react-calendar {
+  width: 100% !important;
+  border: none !important;
+  background-color: transparent;
+}
+
+.react-calendar__navigation {
+  display: flex !important;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  padding: 0 5px;
+}
+
+.react-calendar__navigation button {
+  background: #f0f0f0 !important;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 6px;
+  color: #555;
+  transition: all 0.2s ease;
+}
+
+.react-calendar__navigation button:hover {
+  background-color: #e0e0e0 !important;
+}
+
+.react-calendar__navigation__label {
+  font-weight: 600;
+  font-size: 16px;
+  color: #444;
+  background-color: #f0f0f0;
+  padding: 6px 12px;
+  border-radius: 6px;
+}
+
+/* Días de la semana */
+.react-calendar__month-view__weekdays {
+  background-color: #f0f0f0;
+  border-radius: 6px;
+  margin-bottom: 8px;
+  padding: 5px 0;
+}
+
+.react-calendar__month-view__weekdays__weekday {
+  padding: 8px 0;
+  color: #555;
+  font-weight: 600;
+  text-align: center;
+}
+
+.react-calendar__month-view__weekdays__weekday abbr {
+  text-decoration: none;
+}
+
+/* Celdas de días */
+.react-calendar__tile {
+  background-color: #f8f8f8;
+  margin: 1px;
+  border-radius: 6px;
+  height: 70px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 5px 0;
+  position: relative;
+}
+
+.react-calendar__tile abbr {
+  font-size: 14px;
+  position: absolute;
+  top: 5px;
+}
+
+/* Día actual */
+.current-day {
+  background-color: #e6f7ff !important;
+  border: 1px solid #1890ff !important;
+}
+
+.current-day abbr {
+  color: #1890ff;
+  font-weight: bold;
+}
+
+/* Iconos de asistencia */
+.attendance-icon {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+  margin-top: 25px;
+}
+
+/* Días de otros meses */
+.react-calendar__month-view__days__day--neighboringMonth {
+  background-color: #f5f5f5 !important;
+  color: #aaa !important;
+}
+
+.react-calendar__month-view__days__day--neighboringMonth .attendance-icon {
+  opacity: 0.5;
+}
+
+@media (max-width: 600px) {
+  .calendar-container {
+    width: 95%;
+    padding: 10px;
+  }
+
+  .calendar-title {
+    font-size: 20px;
+  }
+
+  .react-calendar__navigation button,
+  .react-calendar__navigation__label {
+    font-size: 14px;
+    padding: 4px 8px;
+  }
+
+  .react-calendar__month-view__weekdays__weekday {
+    font-size: 12px;
+    padding: 5px 0;
+  }
+
+  .react-calendar__tile {
+    height: 60px;
+  }
+
+  .react-calendar__tile abbr {
+    font-size: 12px;
+  }
+
+  .attendance-icon {
+    width: 25px;
+    height: 25px;
+    margin-top: 20px;
+  }
+}
