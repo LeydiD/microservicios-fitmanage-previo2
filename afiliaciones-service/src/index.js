@@ -13,8 +13,8 @@ const app = express();
 app.use(express.json());
 
 // Rutas del microservicio de Suscripciones
-app.use("/api/suscripciones", suscripcionRoutes);
-app.use("/api/membresias", membresiaRoutes);
+app.use("/suscripciones", suscripcionRoutes);
+app.use("/membresias", membresiaRoutes);
 
 // Puerto desde .env
 const PORT = process.env.PORT || 4002;
