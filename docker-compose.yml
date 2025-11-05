@@ -15,7 +15,7 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-
+    
   usuarios-service:
     build: 
       context: ./usuarios-service
@@ -38,8 +38,6 @@ services:
     restart: always
     env_file:
       - ./afiliaciones-service/.env
-    ports:
-      - "4002:4002"
     depends_on:
       db:
         condition: service_healthy
@@ -52,8 +50,6 @@ services:
     restart: always
     env_file:
       - ./notificaciones-service/.env
-    ports:
-      - "4005:4005"
     depends_on:
       db:
         condition: service_healthy
@@ -94,6 +90,20 @@ services:
       - gateway
     stdin_open: true
     tty: true
+
+  asistencias-service:
+    build: 
+      context: ./asistencias-service
+      dockerfile: Dockerfile
+    container_name: asistencias_service
+    restart: always
+    env_file:
+      - ./asistencias-service/.env
+    environment:
+      - GATEWAY_URL=http://fitmanage_gateway:3000
+    depends_on:
+      db:
+        condition: service_healthy
 
 volumes:
   mysql_data:

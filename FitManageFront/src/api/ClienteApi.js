@@ -110,7 +110,9 @@ export const obtenerDiasRestantes = async (dni) => {
   try {
     const response = await fetch(`${AFILIACIONES_URL}/cliente/${dni}/dias`);
     if (!response.ok) throw new Error("No se pudieron obtener los días restantes");
-    return await response.json();
+    const data = await response.json();
+    // Normaliza posibles shapes: {dias}, {diasRestantes}, {dias_restantes}, o número plano
+    return data?.dias ?? data?.diasRestantes ?? data?.dias_restantes ?? data;
   } catch (error) {
     console.error("Error en obtenerDiasRestantes:", error);
     throw error;
