@@ -15,7 +15,7 @@ class DynamicServiceDiscovery {
       'usuarios': 'http://usuarios_service:4001',
       'afiliaciones': 'http://afiliaciones_service:4002',
       'notificaciones': 'http://notificaciones_service:4005',
-      'asistencias': 'http://asistencias_service:4003',
+      'asistencias': 'http://asistencias_service:4004',
       'rutinas': 'http://rutinas_service:4004'
     };
     this.cache = new Map();

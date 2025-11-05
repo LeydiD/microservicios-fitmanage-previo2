@@ -7,7 +7,7 @@ import {
 } from "react-router-dom";
 import Login from "./components/Login.jsx";
 import AdminLayout from "./components/administrador/AdminLayout.jsx";
-// import InicioAdmin from "./components/administrador/pages/Inicio.jsx";
+import InicioAdmin from "./components/administrador/pages/Inicio.jsx";
 import Registro from "./components/administrador/pages/Registro.jsx";
 import Clientes from "./components/administrador/pages/Clientes.jsx";
 import ClienteLayout from "./components/cliente/ClienteLayout.jsx";
@@ -21,8 +21,8 @@ import ResetPassword from "./components/ResetPassword.jsx";
 import Membresias from "./components/administrador/pages/Membresias.jsx";
 import Pagos from "./components/administrador/pages/Pagos.jsx";
 // import Ganancias from "./components/administrador/pages/Ganancias.jsx";
-// import RegistrarAsistencia from "./components/cliente/pages/RegistrarAsistencia.jsx";
-// import Asistencias from "./components/cliente/pages/Asistencias.jsx";
+import RegistrarAsistencia from "./components/cliente/pages/RegistrarAsistencia.jsx";
+import Asistencias from "./components/cliente/pages/Asistencias.jsx";
 // import Rutinas from "./components/cliente/pages/Rutinas.jsx";
 // import Notificaciones from "./components/cliente/pages/Notificaciones.jsx";
 // import EnviarNotificacion from "./components/administrador/pages/EnviarNotificacion.jsx";
@@ -43,7 +43,7 @@ const App = () => {
           {/* Rutas para Administración */}
           <Route element={<RutaProtegida rolRequerido="Administrador" />}>
             <Route path="/admin" element={<AdminLayout />}>
-              {/* <Route index element={<InicioAdmin />} /> */}
+              {<Route index element={<InicioAdmin />} />}
               {/* <Route
                 path="enviar-notificacion"
                 element={<EnviarNotificacion />}
@@ -61,11 +61,11 @@ const App = () => {
             <Route path="/cliente" element={<ClienteLayout />}>
               {/* <Route index element={<InicioCliente />} /> */}
               <Route path="actualizar" element={<ActualizarInformacion />} />
-              {/* <Route
+              {<Route
                 path="registrar-asistencia"
                 element={<RegistrarAsistencia />}
-              /> */}
-              {/* <Route path="asistencias" element={<Asistencias />} /> */}
+              />}
+              { <Route path="asistencias" element={<Asistencias />} />}
               {/* <Route path="rutinas" element={<Rutinas />} /> */}
               {/* <Route path="notificaciones" element={<Notificaciones />} /> */}
             </Route>

@@ -1,5 +1,6 @@
 
 const API_URL = `${import.meta.env.VITE_BACKEND_URL}/usuarios/clientes`;
+const AFILIACIONES_URL = `${import.meta.env.VITE_BACKEND_URL}/afiliaciones/suscripciones`;
 
 export const registrarCliente = async (datos) => {
   try {
@@ -80,6 +81,40 @@ export const actualizarCliente = async (dni, datos) => {
     return data;
   } catch (error) {
     console.error("Error en actualizarCliente:", error);
+    throw error;
+  }
+};
+
+export const obtenerClienteConDias = async (dni) => {
+  try {
+    const response = await fetch(`${API_URL}/diasRestantes/${dni}`);
+    if (!response.ok) throw new Error("Cliente no encontrado");
+    return await response.json();
+  } catch (error) {
+    console.error("Error en obtenerClientePorDNI:", error);
+    throw error;
+  }
+};
+
+export const obtenerFinSuscripcion = async (dni) => {
+  try {
+    const response = await fetch(`${API_URL}/fecha-fin/${dni}`);
+    if (!response.ok) throw new Error("Cliente no encontrado");
+    return response.json();
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const obtenerDiasRestantes = async (dni) => {
+  try {
+    const response = await fetch(`${AFILIACIONES_URL}/cliente/${dni}/dias`);
+    if (!response.ok) throw new Error("No se pudieron obtener los días restantes");
+    const data = await response.json();
+    // Normaliza posibles shapes: {dias}, {diasRestantes}, {dias_restantes}, o número plano
+    return data?.dias ?? data?.diasRestantes ?? data?.dias_restantes ?? data;
+  } catch (error) {
+    console.error("Error en obtenerDiasRestantes:", error);
     throw error;
   }
 };
