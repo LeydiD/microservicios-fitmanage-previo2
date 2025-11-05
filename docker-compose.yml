@@ -10,6 +10,7 @@ services:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
       interval: 10s
@@ -38,6 +39,8 @@ services:
     restart: always
     env_file:
       - ./afiliaciones-service/.env
+    ports:
+      - "4002:4002"
     depends_on:
       db:
         condition: service_healthy
@@ -50,6 +53,8 @@ services:
     restart: always
     env_file:
       - ./notificaciones-service/.env
+    ports:
+      - "4005:4005"
     depends_on:
       db:
         condition: service_healthy
@@ -76,6 +81,7 @@ services:
       - usuarios-service
       - afiliaciones-service
       - notificaciones-service
+      - asistencias-service
       - consul
 
   frontend1:
@@ -99,8 +105,8 @@ services:
     restart: always
     env_file:
       - ./asistencias-service/.env
-    environment:
-      - GATEWAY_URL=http://fitmanage_gateway:3000
+    ports:
+      - "4003:4003"
     depends_on:
       db:
         condition: service_healthy
