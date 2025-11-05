@@ -1,4 +1,4 @@
-const API_URL =   `${import.meta.env.VITE_BACKEND_URL}/pagos`;
+const API_URL = `${import.meta.env.VITE_BACKEND_URL}/afiliaciones/pagos`;
 
 export const registrarPago = async ({ id_cliente, id_membresia}) => {
     try {

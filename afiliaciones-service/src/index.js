@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import db, { testConnection, createTables } from "./db/db.js";
 import suscripcionRoutes from "./routes/SuscripcionRoutes.js";
 import membresiaRoutes from "./routes/MembresiaRoutes.js";
+import pagoRoutes from "./routes/PagoRoutes.js";
 import axios from "axios";
 
 dotenv.config();
@@ -23,9 +24,10 @@ app.get('/health', (req, res) => {
   });
 });
 
-// Rutas del microservicio de Suscripciones
+// Rutas del microservicio de Afiliaciones
 app.use("/suscripciones", suscripcionRoutes);
 app.use("/membresias", membresiaRoutes);
+app.use("/pagos", pagoRoutes);
 
 // Puerto desde .env
 const PORT = process.env.PORT || 4002;

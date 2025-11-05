@@ -2,55 +2,67 @@ import SuscripcionService from "../services/SuscripcionService.js";
 
 export async function registrar(req, res) {
   try {
-    const { id_cliente, id_membresia } = req.body;
-    const nueva = await SuscripcionService.registrar(id_cliente, id_membresia);
-    res.status(201).json(nueva);
+    const suscripcion = await SuscripcionService.registrar(
+      req.body.id_cliente,
+      req.body.id_membresia
+    );
+    res.status(200).json(suscripcion);
   } catch (error) {
-    res
-      .status(error.statusCode || 500)
-      .json({ error: error.message || "Error interno" });
+    res.status(error.statusCode || 500).json({
+      message: error.message || "Error interno del servidor",
+    });
+  }
+}
+
+export async function verificarActiva(req, res) {
+  try {
+    const { id } = req.params;
+    const tieneActiva = !(await SuscripcionService.verificarMembresiaExpirada(id));
+    res.status(200).json({ tieneActiva });
+  } catch (error) {
+    res.status(200).json({ tieneActiva: false });
   }
 }
 
 export async function obtenerPorCliente(req, res) {
   try {
     const { id } = req.params;
-    const suscripciones = await SuscripcionService.suscripcionesDeCliente(id);
-    res.status(200).json(suscripciones);
+    // Esta función necesita ser implementada en el service
+    res.status(501).json({ message: "Función no implementada aún" });
   } catch (error) {
-    res
-      .status(error.statusCode || 500)
-      .json({ error: error.message || "Error interno" });
+    res.status(error.statusCode || 500).json({
+      message: error.message || "Error interno del servidor",
+    });
   }
 }
 
 export async function ultima(req, res) {
   try {
     const { id } = req.params;
-    const ultima = await SuscripcionService.ultimaSuscripcion(id);
-    res.status(200).json(ultima);
+    const suscripcion = await SuscripcionService.obtenerUltimaSuscripcion(id);
+    res.status(200).json(suscripcion);
   } catch (error) {
-    res
-      .status(error.statusCode || 500)
-      .json({ error: error.message || "Error interno" });
+    res.status(error.statusCode || 500).json({
+      message: error.message || "Error interno del servidor",
+    });
   }
 }
 
-// NUEVO: endpoint que devuelve solo los días restantes (número)
 export async function diasRestantes(req, res) {
   try {
     const { id } = req.params;
-    const dias = await SuscripcionService.diasRestantesCliente(id);
-    res.status(200).json({ id_cliente: id, dias_restantes: dias });
+    // Esta función necesita ser implementada en el service
+    res.status(501).json({ message: "Función no implementada aún" });
   } catch (error) {
-    res
-      .status(error.statusCode || 500)
-      .json({ error: error.message || "Error interno" });
+    res.status(error.statusCode || 500).json({
+      message: error.message || "Error interno del servidor",
+    });
   }
 }
 
 export default {
   registrar,
+  verificarActiva,
   obtenerPorCliente,
   ultima,
   diasRestantes,

@@ -83,7 +83,7 @@ async function registerInConsul() {
       Port: parseInt(process.env.PORT || 4001),
       Check: {
         HTTP: `http://usuarios_service:${process.env.PORT || 4001}/health`,
-        Interval: '10s',
+        Interval: '30s',
         Timeout: '5s'
       }
     });

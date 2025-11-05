@@ -2,7 +2,7 @@ import {
   listar as listarClientes, buscarPorCedula as buscarPCedula,
   registrarCliente as registrarCliente, actualizarCliente as actualizarClienteS, actualizarContraseña as actualizarContraseñaCliente
 } from "../services/ClienteServices.js";
-import axios from "axios";
+import apiClient from "../utils/ApiClient.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import dotenv from "dotenv";
@@ -52,10 +52,7 @@ export async function registrar(req, res) {
     const token = jwt.sign({ DNI }, process.env.JWT_SECRET, { expiresIn: "72h" });
     const link = `${process.env.FRONTEND_URL}/crear-contrasena/${token}`;
 
-    await axios.post(`${process.env.NOTIFICACIONES_URL}/notificaciones/email`, {
-      destinatario: email,
-      asunto: "Crea tu contraseña",
-      mensaje: `
+    await apiClient.enviarNotificacion(email, "Crea tu contraseña", `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px; background-color: #f9f9f9;">
           <h2 style="color: #333;">Hola ${nombre},</h2>
           <p style="font-size: 16px; color: #555;">
@@ -80,8 +77,7 @@ export async function registrar(req, res) {
             © ${new Date().getFullYear()} Gym Klinsmann. Todos los derechos reservados.
           </p>
         </div>
-      `
-    });
+      `);
     res.status(201).json(nuevoCliente);
   } catch (error) {
     console.error("Error al registrar cliente:", error);

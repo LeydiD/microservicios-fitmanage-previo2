@@ -1,138 +1,123 @@
-import axios from "axios";
 import Suscripcion from "../models/Suscripcion.js";
+import { calcularEstado } from "../models/Suscripcion.js";
 import Membresia from "../models/Membresia.js";
-import { NotFoundError, BadRequestError } from "../errors/Errores.js";
 import { Op } from "sequelize";
+import apiClient from "../utils/ApiClient.js";
 
-const USUARIOS_MS_URL = process.env.USUARIOS_MS_URL;
+import {
+  NotFoundError,
+  BadRequestError,
+  InternalServerError,
+} from "../errors/Errores.js";
 
-// utilidad para calcular fecha fin a partir de días
-function calcularFechaFin(fechaInicio, duracionDias) {
-  const fin = new Date(fechaInicio);
-  fin.setDate(fin.getDate() + duracionDias);
-  return fin;
-}
-
-// utilidad para calcular dias restantes desde ahora hasta fechaFin
-function calcularDiasRestantes(fechaFin) {
-  if (!fechaFin) return 0;
-  const hoy = new Date();
-  const fin = new Date(fechaFin);
-  const diff = fin - hoy; // ms
-  const dias = Math.ceil(diff / (1000 * 60 * 60 * 24));
-  return dias > 0 ? dias : 0;
-}
-
-// Registrar nueva suscripción
+//Registrar nueva suscripcion
 async function registrar(id_cliente, id_membresia) {
-  if (!id_cliente || !id_membresia) {
-    throw new BadRequestError(
-      "Datos incompletos: cliente o membresía faltante"
-    );
+  if (!id_cliente || !id_membresia || isNaN(id_membresia)) {
+    throw new BadRequestError("DNI o membresia no valida.");
   }
-
-  // validar cliente en microservicio Usuarios
   try {
-    const clienteResp = await axios.get(
-      `${USUARIOS_MS_URL}/clientes/${id_cliente}`
-    );
-    if (!clienteResp.data)
-      throw new NotFoundError("Cliente no encontrado en Usuarios MS");
-  } catch (err) {
-    // si la llamada devolvió 404 o no responde, estandarizamos el error
-    if (err.response && err.response.status === 404) {
-      throw new NotFoundError("Cliente no encontrado en Usuarios MS");
+    // Verificar cliente via API Gateway
+    await apiClient.verificarClienteExiste(id_cliente);
+    
+    const membresia = await Membresia.findByPk(id_membresia);
+    if (!membresia) {
+      throw new NotFoundError("Membresia no encontrada");
     }
-    throw new Error("Error validando cliente en Usuarios MS");
+    const fechaInicio = new Date();
+    const fechaFin = new Date(
+      calcularFechafin(fechaInicio, parseInt(membresia.duracion))
+    );
+    //const estado = calcularEstado(fechaInicio, fechaFin);
+
+    const suscripcion = await Suscripcion.create({
+      fecha_inicio: fechaInicio,
+      fecha_fin: fechaFin,
+      id_cliente: id_cliente,
+      id_membresia: id_membresia,
+    });
+    return suscripcion;
+  } catch (error) {
+    throw error;
   }
+}
 
-  // validar membresía localmente
-  const membresia = await Membresia.findByPk(id_membresia);
-  if (!membresia) throw new NotFoundError("Membresía no encontrada");
+function calcularFechafin(fechaInicio, dias) {
+  const nuevaFecha = new Date(fechaInicio);
+  nuevaFecha.setDate(nuevaFecha.getDate() + dias);
+  return nuevaFecha;
+}
 
-  // calcular fecha fin (asumimos que membresia.duracion es número de días o "X meses")
-  let dias = parseInt(membresia.duracion, 10);
-  if (isNaN(dias)) {
-    // si viene como "3 meses", extraemos número y convertimos a días (aprox 30 días/mes)
-    const match = String(membresia.duracion).match(/\d+/);
-    dias = match ? parseInt(match[0], 10) * 30 : 0;
+async function obtenerUltimaSuscripcion(id_cliente) {
+  try {
+    const ultimaSuscripcion = await Suscripcion.findOne({
+      where: { id_cliente },
+      order: [["fecha_fin", "DESC"]],
+    });
+
+    if (!ultimaSuscripcion) {
+      throw new NotFoundError("No se encontró ninguna membresía activa.");
+    }
+
+    return ultimaSuscripcion;
+  } catch (error) {
+    throw error;
   }
-
-  const fechaInicio = new Date();
-  const fechaFin = calcularFechaFin(fechaInicio, dias);
-
-  const suscripcion = await Suscripcion.create({
-    id_cliente,
-    id_membresia,
-    fecha_inicio: fechaInicio,
-    fecha_fin: fechaFin,
-    estado: calcularDiasRestantes(fechaFin) > 0 ? "activo" : "vencido",
-  });
-
-  return suscripcion;
 }
 
-// Obtener todas las suscripciones de un cliente (ordenadas desc por fecha_fin)
-async function suscripcionesDeCliente(id_cliente) {
-  if (!id_cliente) throw new BadRequestError("ID de cliente vacío");
+async function verificarMembresiaExpirada(id_cliente) {
+  try {
+    const ultimaSuscripcion = await obtenerUltimaSuscripcion(id_cliente);
 
-  const suscripciones = await Suscripcion.findAll({
-    where: { id_cliente },
-    include: [Membresia],
-    order: [["fecha_fin", "DESC"]],
-  });
+    const hoy = new Date();
+    const fechaFin = new Date(ultimaSuscripcion.fecha_fin);
 
-  return suscripciones.map((s) => ({
-    id: s.id_suscripcion,
-    id_cliente: s.id_cliente,
-    id_membresia: s.id_membresia,
-    tipo_membresia: s.membresia?.tipo || "No tiene",
-    fecha_inicio: s.fecha_inicio,
-    fecha_fin: s.fecha_fin,
-    estado: calcularDiasRestantes(s.fecha_fin) > 0 ? "activo" : "vencido",
-    dias_restantes: calcularDiasRestantes(s.fecha_fin),
-  }));
+    return fechaFin < hoy;
+  } catch (error) {
+    throw error;
+  }
 }
 
-// Última suscripción (la más reciente por fecha_fin)
-async function ultimaSuscripcion(id_cliente) {
-  const suscripciones = await Suscripcion.findAll({
-    where: { id_cliente },
-    include: [Membresia],
-    order: [["fecha_fin", "DESC"]],
-    limit: 1,
-  });
+async function obtenerClientesActivos() {
+  const hoy = new Date();
 
-  if (!suscripciones || suscripciones.length === 0) return null;
+  try {
+    // Obtener suscripciones activas
+    const suscripcionesActivas = await Suscripcion.findAll({
+      where: {
+        fecha_fin: { [Op.gte]: hoy }, // suscripción vigente
+      },
+      include: [{ model: Membresia }]
+    });
 
-  const s = suscripciones[0];
-  return {
-    id: s.id_suscripcion,
-    id_cliente: s.id_cliente,
-    id_membresia: s.id_membresia,
-    tipo_membresia: s.membresia?.tipo || "No tiene",
-    fecha_inicio: s.fecha_inicio,
-    fecha_fin: s.fecha_fin,
-    estado: calcularDiasRestantes(s.fecha_fin) > 0 ? "activo" : "vencido",
-    dias_restantes: calcularDiasRestantes(s.fecha_fin),
-  };
-}
+    // Obtener información de clientes via API
+    const clientesConInfo = [];
+    for (const suscripcion of suscripcionesActivas) {
+      try {
+        const clienteInfo = await apiClient.obtenerInfoCliente(suscripcion.id_cliente);
+        clientesConInfo.push({
+          ...clienteInfo,
+          suscripcion: {
+            id_suscripcion: suscripcion.id_suscripcion,
+            fecha_inicio: suscripcion.fecha_inicio,
+            fecha_fin: suscripcion.fecha_fin,
+            estado: suscripcion.estado,
+            membresia: suscripcion.membresia
+          }
+        });
+      } catch (error) {
+        console.warn(`No se pudo obtener info del cliente ${suscripcion.id_cliente}:`, error.message);
+      }
+    }
 
-// Devuelve solo los días restantes de la última suscripción de un cliente (0 si no tiene o vencida)
-async function diasRestantesCliente(id_cliente) {
-  if (!id_cliente) throw new BadRequestError("ID de cliente vacío");
-
-  const ultima = await ultimaSuscripcion(id_cliente);
-  if (!ultima) return 0;
-
-  return calcularDiasRestantes(ultima.fecha_fin);
+    return clientesConInfo;
+  } catch (error) {
+    throw error;
+  }
 }
 
 export default {
   registrar,
-  suscripcionesDeCliente,
-  ultimaSuscripcion,
-  diasRestantesCliente,
-  // exportamos util por si lo usas en otro lugar
-  calcularDiasRestantes,
+  obtenerUltimaSuscripcion,
+  verificarMembresiaExpirada,
+  obtenerClientesActivos,
 };
