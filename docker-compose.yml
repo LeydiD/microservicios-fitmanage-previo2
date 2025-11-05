@@ -58,6 +58,16 @@ services:
       db:
         condition: service_healthy
 
+  consul:
+    image: consul:1.15
+    container_name: fitmanage_consul
+    restart: always
+    ports:
+      - "8500:8500"
+    command: consul agent -dev -client=0.0.0.0 -ui
+    environment:
+      - CONSUL_BIND_INTERFACE=eth0
+
   gateway:
     build: 
       context: ./api-gateway
@@ -70,6 +80,7 @@ services:
       - usuarios-service
       - afiliaciones-service
       - notificaciones-service
+      - consul
 
   frontend1:
     build: 

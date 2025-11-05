@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import os from "os";
 import cors from "cors";
+import axios from "axios";
 import db from "./db/db.js";
 import clienteRoutes from "./routes/ClienteRoutes.js";
 import Administrador from "./models/Administrador.js";
@@ -57,5 +58,40 @@ app.listen(process.env.PORT, () => {
 });
 
 
+// Health check endpoint para Consul
+app.get('/health', (req, res) => {
+  res.json({
+    status: 'OK',
+    service: 'usuarios-service',
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime()
+  });
+});
+
 app.use("/clientes", clienteRoutes);
 app.use("/auth", authRoutes);
+
+// Registrar servicio en Consul
+async function registerInConsul() {
+  const consulUrl = `http://${process.env.CONSUL_HOST || 'consul'}:${process.env.CONSUL_PORT || 8500}`;
+  
+  try {
+    await axios.put(`${consulUrl}/v1/agent/service/register`, {
+      ID: 'usuarios-service-instance',
+      Name: 'usuarios-service',
+      Address: 'usuarios_service',
+      Port: parseInt(process.env.PORT || 4001),
+      Check: {
+        HTTP: `http://usuarios_service:${process.env.PORT || 4001}/health`,
+        Interval: '10s',
+        Timeout: '5s'
+      }
+    });
+    console.log('✅ Usuarios-service registrado en Consul');
+  } catch (error) {
+    console.error('❌ Error registrando en Consul:', error.message);
+  }
+}
+
+// Registrar en Consul después de 5 segundos
+setTimeout(registerInConsul, 5000);

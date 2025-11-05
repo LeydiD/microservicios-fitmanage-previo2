@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import db, { testConnection, createTables } from "./db/db.js";
 import suscripcionRoutes from "./routes/SuscripcionRoutes.js";
 import membresiaRoutes from "./routes/MembresiaRoutes.js";
+import axios from "axios";
 
 dotenv.config();
 
@@ -11,6 +12,16 @@ const app = express();
 
 // Middleware para JSON
 app.use(express.json());
+
+// Health check endpoint para Consul
+app.get('/health', (req, res) => {
+  res.json({
+    status: 'OK',
+    service: 'afiliaciones-service',
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime()
+  });
+});
 
 // Rutas del microservicio de Suscripciones
 app.use("/suscripciones", suscripcionRoutes);
@@ -29,9 +40,34 @@ async function init() {
       console.log(
         `Microservicio de Suscripciones escuchando en el puerto ${PORT}`
       );
+      
+      // Registrar en Consul después de 5 segundos
+      setTimeout(registerInConsul, 5000);
     });
   } catch (error) {
     console.error("Error iniciando el microservicio de Suscripciones:", error);
+  }
+}
+
+// Registrar servicio en Consul
+async function registerInConsul() {
+  const consulUrl = `http://${process.env.CONSUL_HOST || 'consul'}:${process.env.CONSUL_PORT || 8500}`;
+  
+  try {
+    await axios.put(`${consulUrl}/v1/agent/service/register`, {
+      ID: 'afiliaciones-service-instance',
+      Name: 'afiliaciones-service',
+      Address: 'afiliaciones_service',
+      Port: parseInt(PORT),
+      Check: {
+        HTTP: `http://afiliaciones_service:${PORT}/health`,
+        Interval: '10s',
+        Timeout: '5s'
+      }
+    });
+    console.log('✅ Afiliaciones-service registrado en Consul');
+  } catch (error) {
+    console.error('❌ Error registrando en Consul:', error.message);
   }
 }
 
