@@ -23,7 +23,7 @@ app.get("/health", (req, res) => {
 // Rutas del microservicio de asistencias
 app.use("/asistencias", asistenciaRoutes);
 
-const PORT = process.env.PORT || 4004;
+const PORT = process.env.PORT || 4003;
 
 async function init() {
   try {

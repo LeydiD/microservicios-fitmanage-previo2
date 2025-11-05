@@ -2,7 +2,7 @@ import axios from 'axios';
 
 class ApiClient {
   constructor() {
-    this.gatewayUrl = process.env.API_GATEWAY_URL || 'http://fitmanage_gateway:3000';
+    this.gatewayUrl = process.env.API_GATEWAY_URL || 'http://gateway:3000';
     this.timeout = 10000; // 10 segundos
   }
 

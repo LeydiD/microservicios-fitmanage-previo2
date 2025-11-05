@@ -1,9 +1,11 @@
-const API_URL = import.meta.env.VITE_BACKEND_URL;
+import { API_BASE_URL } from '../config/apiConfig.js';
+
+const API_URL = API_BASE_URL;
 const API_URL_LOGIN = `${API_URL}/usuarios/auth/login`;
 
 //const API_URL = "https://fitmanageback-production.up.railway.app/auth/login";
 
-console.log("URL del backend:", import.meta.env.VITE_BACKEND_URL);
+console.log("URL del backend:", API_URL);
 
 export const login = async ({ DNI, contraseña }) => {
   try {

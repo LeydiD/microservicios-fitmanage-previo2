@@ -1,6 +1,8 @@
 
-const API_URL = `${import.meta.env.VITE_BACKEND_URL}/usuarios/clientes`;
-const AFILIACIONES_URL = `${import.meta.env.VITE_BACKEND_URL}/afiliaciones/suscripciones`;
+import { API_BASE_URL } from '../config/apiConfig.js';
+
+const API_URL = `${API_BASE_URL}/usuarios/clientes`;
+const AFILIACIONES_URL = `${API_BASE_URL}/afiliaciones/suscripciones`;
 
 export const registrarCliente = async (datos) => {
   try {

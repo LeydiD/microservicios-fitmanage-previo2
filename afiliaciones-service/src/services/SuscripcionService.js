@@ -115,9 +115,30 @@ async function obtenerClientesActivos() {
   }
 }
 
+async function calcularDiasRestantes(id_cliente) {
+  try {
+    const ultimaSuscripcion = await obtenerUltimaSuscripcion(id_cliente);
+    
+    const hoy = new Date();
+    const fechaFin = new Date(ultimaSuscripcion.fecha_fin);
+    
+    // Calcular diferencia en milisegundos
+    const diferenciaTiempo = fechaFin.getTime() - hoy.getTime();
+    
+    // Convertir a días
+    const diasRestantes = Math.ceil(diferenciaTiempo / (1000 * 3600 * 24));
+    
+    // Si es negativo, la membresía ha expirado
+    return Math.max(0, diasRestantes);
+  } catch (error) {
+    throw error;
+  }
+}
+
 export default {
   registrar,
   obtenerUltimaSuscripcion,
   verificarMembresiaExpirada,
   obtenerClientesActivos,
+  calcularDiasRestantes,
 };

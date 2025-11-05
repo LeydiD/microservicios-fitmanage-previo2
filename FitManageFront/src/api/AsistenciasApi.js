@@ -1,4 +1,6 @@
-const API_URL = `${import.meta.env.VITE_BACKEND_URL}/asistencias/asistencias`;
+import { API_BASE_URL } from '../config/apiConfig.js';
+
+const API_URL = `${API_BASE_URL}/asistencias/asistencias`;
 
 export const registrarAsistencia = async () => {
   try {
@@ -6,6 +8,13 @@ export const registrarAsistencia = async () => {
     if (!dni) {
       throw new Error("No se encontró el DNI en el almacenamiento local");
     }
+    
+    console.log('🎯 Registrando asistencia:', {
+      dni,
+      apiUrl: API_URL,
+      fullUrl: `${API_URL}`
+    });
+    
     const response = await fetch(`${API_URL}`, {
       method: "POST",
       headers: {
