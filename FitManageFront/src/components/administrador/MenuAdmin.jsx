@@ -276,6 +276,9 @@ const MenuAdmin = ({ isOpen, setIsOpen }) => {
         <Link to="/admin/clientes" onClick={handleLinkClick}>
           <Button text="Clientes" />
         </Link>
+        <Link to="/admin/referidos" onClick={handleLinkClick}>
+          <Button text="Referidos" />
+        </Link>
         <Link to="/admin/membresias" onClick={handleLinkClick}>
           <Button text="Membresías" />
         </Link>

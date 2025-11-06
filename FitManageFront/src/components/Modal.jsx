@@ -123,7 +123,7 @@ const Modal = ({ title, body, show, onClose, onCancel, type = "info" }) => {
             </p>
           </div>
 
-          {type === "info" && (
+          {/* {type === "info" && (
             <div 
               className="modal-footer" 
               style={{ 
@@ -167,7 +167,7 @@ const Modal = ({ title, body, show, onClose, onCancel, type = "info" }) => {
                 Confirmar
               </button>
             </div>
-          )}
+          )} */}
         </div>
       </div>
     </div>
