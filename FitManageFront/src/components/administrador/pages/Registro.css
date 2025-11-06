@@ -1,0 +1,97 @@
+.registro-container {
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: url("https://img.freepik.com/foto-gratis/textura-pared-ladrillo_1194-6421.jpg")
+    no-repeat center center/cover;
+  height: calc(100vh - 70px);
+}
+
+.registro-form {
+  font-weight: bold;
+  background: white;
+  border-radius: 50px;
+  width: 65%;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  position: relative;
+  padding: 2%;
+  margin-top: 1%;
+}
+
+h2 {
+  margin-top: 10px;
+  font-size: 20px;
+  text-align: center;
+}
+
+.logo-container {
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  top: -60px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: white;
+  border-radius: 50%;
+  padding: 8px;
+  height: 18%;
+}
+
+.gym-logo {
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+  margin: 0 auto;
+}
+
+.form-control {
+  background: #dedddd;
+  border: none;
+  padding: 8px;
+  border-radius: 15px;
+}
+
+.form-control:focus {
+  box-shadow: none;
+  border: 1px solid gray;
+}
+
+label {
+  padding: 3px;
+}
+
+.btn-danger {
+  font-weight: bold;
+  font-size: 16px;
+  padding: 8px;
+  border-radius: 8px;
+  width: 50%;
+  background-color: #e11a1a;
+}
+
+@media (max-width: 878px) {
+  .registro-container {
+    height: auto;
+  }
+  .logo-container {
+    position: absolute;
+    top: -45px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    border-radius: 50%;
+    padding: 8px;
+    height: 10%;
+  }
+
+  .registro-form {
+    margin-top: 10%;
+    padding: 5%;
+    width: 85%;
+  }
+
+  .btn-danger {
+    padding: auto;
+  }
+}

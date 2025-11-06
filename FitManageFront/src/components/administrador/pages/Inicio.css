@@ -1,0 +1,25 @@
+/* src/components/Inicio.css */
+
+.inicio-container {
+  background: url("https://img.freepik.com/foto-gratis/textura-pared-ladrillo_1194-6421.jpg")
+    no-repeat center center/cover;
+  background-size: cover;
+  padding: 2rem;
+}
+
+.form-box {
+  max-width: 400px;
+  min-width: 300px;
+  background-color: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.logo-box img {
+  max-height: 300px;
+}
+
+.form-box {
+  width: 100%;
+  max-width: 500px;
+  margin: auto;
+}
