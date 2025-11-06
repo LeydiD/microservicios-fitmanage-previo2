@@ -7,14 +7,16 @@ const Cliente = db.define(
     DNI: { type: DataTypes.STRING(20), primaryKey: true, unique: true },
     nombre: { type: DataTypes.STRING(100), allowNull: false },
     telefono: { type: DataTypes.STRING(20) },
-    email: { type: DataTypes.STRING(100) },
+    email: { type: DataTypes.STRING(100),  },
     edad: { type: DataTypes.INTEGER },
     peso: { type: DataTypes.DECIMAL(5, 2) },
     altura: { type: DataTypes.DECIMAL(5, 2) },
     contraseña: { type: DataTypes.STRING(255) },
     objetivo: { type: DataTypes.STRING(100) },
+    avatar: { type: DataTypes.STRING(400), allowNull: true },
     es_referido: {type: DataTypes.BOOLEAN, defaultValue: false },
-    cantidad_referidos: { type: DataTypes.INTEGER(2), defaultValue: 0}
+    cantidad_referidos: { type: DataTypes.INTEGER(2), defaultValue: 0},
+    fecha_referido: { type: DataTypes.DATEONLY, allowNull: true },
   },
   {
     timestamps: false,
