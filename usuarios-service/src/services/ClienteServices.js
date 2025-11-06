@@ -45,10 +45,29 @@ export async function actualizarContraseña(dni, contraseñaHasheada) {
 
 
 export async function listar() {
-    return await cliente.findAll({
+    const clientes = await cliente.findAll({
         attributes: ["DNI", "nombre", "email", "telefono"],
     });
+
+    const resultado = await Promise.all(
+        clientes.map(async (c) => {
+            const referidos = await cliente.findAll({
+                where: { id_referido: c.DNI, es_referido: true },
+                attributes: ["DNI", "nombre", "telefono", "email", "fecha_referido"]
+            });
+
+            return {
+                ...c.dataValues,
+                tiene_referidos: referidos.length > 0,
+                cantidad_referidos: referidos.length,
+                referidos: referidos.map(r => r.dataValues)
+            };
+        })
+    );
+    return resultado;
+
 }
+
 
 // async function registrarClienteReferido(DNIclienteNuevo, documentoReferido, nombre, correo, telefono, peso, altura, edad) {
 //     try {
