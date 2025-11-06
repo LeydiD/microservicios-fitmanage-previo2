@@ -28,7 +28,7 @@ db.sync()
 
 async function main() {
     try {
-        await db.sync({ force: false });
+        await db.sync({ force: false }); //aca cuando lo bajen pone  alter:tru y luego lo vuelve a poner como está acá
         console.log("Tablas creadas exitosamente B)")
     } catch (error) {
         console.log(error.message);
