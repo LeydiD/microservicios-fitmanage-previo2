@@ -10,6 +10,7 @@ import AdminLayout from "./components/administrador/AdminLayout.jsx";
 import InicioAdmin from "./components/administrador/pages/Inicio.jsx";
 import Registro from "./components/administrador/pages/Registro.jsx";
 import Clientes from "./components/administrador/pages/Clientes.jsx";
+import Referidos from "./components/administrador/pages/Referidos.jsx";
 import ClienteLayout from "./components/cliente/ClienteLayout.jsx";
 // import InicioCliente from "./components/cliente/Inicio.jsx";
 import ActualizarInformacion from "./components/cliente/pages/ActualizarInfo.jsx";
@@ -50,6 +51,7 @@ const App = () => {
               /> */}
               <Route path="registro" element={<Registro />} />
               <Route path="clientes" element={<Clientes />} />
+              <Route path="referidos" element={<Referidos />} />
               {<Route path="membresias" element={<Membresias />} />}
               <Route path="registrar-pago" element={<Pagos />} />
               {/* <Route path="ganancias" element={<Ganancias />} /> */}

@@ -1,6 +1,9 @@
 import {
   listar as listarClientes, buscarPorCedula as buscarPCedula,
-  registrarCliente as registrarCliente, actualizarCliente as actualizarClienteS, actualizarContraseña as actualizarContraseñaCliente
+  registrarCliente as registrarCliente,
+  actualizarCliente as actualizarClienteS,
+  actualizarContraseña as actualizarContraseñaCliente,
+  obtenerReferidos as obtenerReferidosService
 } from "../services/ClienteServices.js";
 import apiClient from "../utils/ApiClient.js";
 import jwt from "jsonwebtoken";
@@ -167,3 +170,15 @@ export async function registrarClienteReferido(req, res) {
     res.status(500).json({ message: "Error interno del servidor" });
   }
 };
+export async function obtenerReferidos(req, res) {
+  try {
+    const referidos = await obtenerReferidosService();
+    res.status(200).json(referidos);
+  } catch (error) {
+    res.status(500).json({
+      message: "Error al obtener los referidos",
+      error: error.message
+    });
+  }
+};
+

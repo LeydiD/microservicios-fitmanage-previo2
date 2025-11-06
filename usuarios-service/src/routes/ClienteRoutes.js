@@ -1,5 +1,7 @@
 import { Router } from "express";
-import { listar, buscarPorCedula, registrar, actualizarCliente, crearContraseña, registrarClienteReferido } from "../controllers/ClienteController.js";
+import { listar, buscarPorCedula, registrar, actualizarCliente, crearContraseña, registrarClienteReferido, obtenerReferidos } from "../controllers/ClienteController.js";
+
+
 
 
 const router = Router();
@@ -24,5 +26,8 @@ router.post("/crear-contrasena/:token", crearContraseña);
 
 //Registrar referido
 router.post("/referido", registrarClienteReferido );
+//obtener referidos
+router.get("/usuarios/referidos", obtenerReferidos)
+
 
 export default router;

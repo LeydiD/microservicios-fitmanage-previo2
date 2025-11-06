@@ -84,9 +84,9 @@ const Clientes = () => {
     setClientes(filtrados);
   };
 
-  const handleViewInfo = async (dni) => {
+  const handleViewInfo = async (clienteRow) => {
     try {
-      const data = await obtenerClientePorDNI(dni);
+      const data = await obtenerClientePorDNI(clienteRow.DNI);
       showModal(
         "Información del Cliente",
         <div>
@@ -111,6 +111,20 @@ const Clientes = () => {
           <p>
             <strong>Altura:</strong> {data.altura} m
           </p>
+          
+            <div>
+              <p><strong>Referidos:</strong></p>
+              {Array.isArray(clienteRow?.referidos) && clienteRow.referidos.length > 0 ? (
+                <ul>
+                  {clienteRow.referidos.map((ref, i) => (
+                    <li key={i}>{ref?.nombre ?? "-"}</li>
+                  ))}
+                </ul>
+              ) : (
+                <p>No tiene referidos.</p>
+              )}
+            </div>
+  
         </div>
       );
     } catch (error) {
@@ -184,7 +198,7 @@ const Clientes = () => {
                     <td>
                       <button
                         className="ver-btn"
-                        onClick={() => handleViewInfo(cliente.DNI)}
+                        onClick={() => handleViewInfo(cliente)}
                       >
                         Ver
                       </button>
