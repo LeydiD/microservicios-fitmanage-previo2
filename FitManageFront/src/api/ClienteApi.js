@@ -121,3 +121,13 @@ export const obtenerDiasRestantes = async (dni) => {
   }
 };
 
+export const obtenerReferidos = async () => {
+  try {
+    const response = await fetch(`${API_URL}/usuarios/referidos`);
+    if (!response.ok) throw new Error("Error al obtener referidos");
+    return await response.json();
+  } catch (error) {
+    console.error("Error en obtener referidos:", error);
+    throw error;
+  }
+}
