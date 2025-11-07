@@ -7,7 +7,7 @@ services:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: fitmanage
     ports:
-      - "3307:3306"
+      - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
       - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
@@ -123,12 +123,16 @@ services:
     restart: always
     env_file:
       - ./asistencias-service/.env
+    environment:
+      - TZ=America/Bogota
     ports:
       - "4003:4003"
     depends_on:
       db:
         condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
 
 volumes:
   mysql_data:
-  rabbitmq_data:  
+  rabbitmq_data:

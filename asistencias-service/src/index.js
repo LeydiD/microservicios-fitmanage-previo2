@@ -33,18 +33,26 @@ async function init() {
   try {
     await testConnection();
     await createTables();
-    // 1. Conectar a RabbitMQ
-    console.log("📡 Conectando a RabbitMQ...");
-    await connect();
 
-    // 2. Configurar el publisher
-    console.log("📤 Configurando publisher...");
-    await setupPublisher();
-
+    // Levantar el servidor HTTP primero, para que el gateway pueda enrutar de inmediato
     app.listen(PORT, () => {
       console.log(`Microservicio de Asistencias escuchando en el puerto ${PORT}`);
+      // Registrar en Consul después de un pequeño delay
       setTimeout(registerInConsul, 5000);
     });
+
+    // Conectar a RabbitMQ de forma no bloqueante
+    (async () => {
+      try {
+        console.log("📡 Conectando a RabbitMQ...");
+        await connect();
+        console.log("📤 Configurando publisher...");
+        await setupPublisher();
+        console.log("✅ RabbitMQ listo en asistencias-service");
+      } catch (error) {
+        console.error("❌ RabbitMQ no disponible por ahora en asistencias-service:", error.message);
+      }
+    })();
   } catch (error) {
     console.error("Error iniciando el microservicio de Asistencias:", error);
   }

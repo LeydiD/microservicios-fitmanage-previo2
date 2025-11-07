@@ -25,6 +25,21 @@ export const registrarCliente = async (datos) => {
   }
 };
 
+export const registrarClienteReferido = async (datos) => {
+  try {
+    const response = await fetch(`${API_URL}/referido`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(datos),
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error en registrarClienteReferido:", error);
+    throw error;
+  }
+};
+
 export const obtenerClientes = async () => {
   try {
     const response = await fetch(API_URL);
@@ -108,18 +123,18 @@ export const obtenerFinSuscripcion = async (dni) => {
   }
 };
 
-export const obtenerDiasRestantes = async (dni) => {
-  try {
-    const response = await fetch(`${AFILIACIONES_URL}/cliente/${dni}/dias`);
-    if (!response.ok) throw new Error("No se pudieron obtener los días restantes");
-    const data = await response.json();
-    // Normaliza posibles shapes: {dias}, {diasRestantes}, {dias_restantes}, o número plano
-    return data?.dias ?? data?.diasRestantes ?? data?.dias_restantes ?? data;
-  } catch (error) {
-    console.error("Error en obtenerDiasRestantes:", error);
-    throw error;
-  }
-};
+// export const obtenerDiasRestantes = async (dni) => {
+//   try {
+//     const response = await fetch(`${AFILIACIONES_URL}/cliente/${dni}/dias`);
+//     if (!response.ok) throw new Error("No se pudieron obtener los días restantes");
+//     const data = await response.json();
+//     // Normaliza posibles shapes: {dias}, {diasRestantes}, {dias_restantes}, o número plano
+//     return data?.dias ?? data?.diasRestantes ?? data?.dias_restantes ?? data;
+//   } catch (error) {
+//     console.error("Error en obtenerDiasRestantes:", error);
+//     throw error;
+//   }
+// };
 
 export const obtenerReferidos = async () => {
   try {

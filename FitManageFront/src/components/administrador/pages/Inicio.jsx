@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './Inicio.css';
 import logo from "../../../../public/Logo.png";
-import { obtenerClientePorDNI, obtenerDiasRestantes } from '../../../api/ClienteApi.js'; 
+import { obtenerClientePorDNI/*, obtenerDiasRestantes*/} from '../../../api/ClienteApi.js'; 
 import { registrarAsistencia } from '../../../api/AsistenciasApi.js';
 
 function Inicio() {
@@ -25,7 +25,7 @@ function Inicio() {
     try {
       const [clienteData, diasData] = await Promise.all([
         obtenerClientePorDNI(dni),
-        obtenerDiasRestantes(dni),
+        // obtenerDiasRestantes(dni),
       ]);
       setCliente({
         nombre: clienteData.nombre,
@@ -111,10 +111,10 @@ function Inicio() {
               />
             </div>
 
-            <div className="text-center mb-3">
+            {/* <div className="text-center mb-3">
               <strong className="fs-5">Días restantes</strong>
               <div className="fs-3">{cliente.dias || "0"}</div>
-            </div>
+            </div> */}
 
             {mensaje && (
               <div className={`alert ${isError ? 'alert-danger' : 'alert-success'} text-center`} role="alert">
