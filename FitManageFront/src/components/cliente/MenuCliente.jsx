@@ -274,10 +274,10 @@ const MenuCliente = ({ isOpen, setIsOpen }) => {
         </Link>
         <Link to="/cliente/asistencias" onClick={handleLinkClick}>
           <Button text="Asistencias" />
-          <Link to="/cliente/registrar-referido" onClick={handleLinkClick}>
+        </Link>
+        <Link to="/cliente/registrar-referido" onClick={handleLinkClick}>
             <Button text="Referidos" />
           </Link>
-        </Link>
         <Link to="/cliente/rutinas" onClick={handleLinkClick}>
           <Button text="Rutinas" />
         </Link>
