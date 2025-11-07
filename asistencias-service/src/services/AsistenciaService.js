@@ -3,6 +3,7 @@ import { Op } from "sequelize";
 import { NotFoundError, InternalServerError, Conflict, BadRequestError } from "../errors/Errores.js";
 import Asistencia from "../models/Asistencia.js";
 import { startOfWeek, addDays, format } from "date-fns";
+import { publicarAsistenciaCreada } from "../asistenciaPublisher.js";
 
 // Base del API Gateway
 const GATEWAY = process.env.API_GATEWAY_URL || "http://gateway:3000";
@@ -27,23 +28,24 @@ async function enviarCorreo(destinatario, asunto, mensaje) {
 async function registrarAsistencia(dni) {
   if (!dni) throw new BadRequestError("El dni del cliente es requerido");
   try {
+    /*
     const ultimaSuscripcion = await getUltimaSuscripcion(dni);
     if (!ultimaSuscripcion) throw new NotFoundError("No se encontró la suscripción");
-
+*/
     const hoyDate = new Date();
-    const hoy = format(hoyDate, "yyyy-MM-dd");
-    const fin = new Date(ultimaSuscripcion.fecha_fin);
+   const hoy = format(hoyDate, "yyyy-MM-dd");
+    //const fin = new Date(ultimaSuscripcion.fecha_fin);
 
     const yaRegistro = await verSiYaRegistroAsistencia(dni, hoy);
     if (yaRegistro) throw new Conflict("Ya registró asistencia hoy.");
-    if (hoyDate > fin) throw new Conflict("No cuenta con membresía activa");
+   // if (hoyDate > fin) throw new Conflict("No cuenta con membresía activa");
 
     const asistencia = await Asistencia.create({
       fecha: hoy,
       dni_cliente: dni,
     });
     if (!asistencia) throw new InternalServerError("No se pudo crear la asistencia");
-
+/*
     // Notificación por correo (si hay email disponible)
     try {
       const cliente = await getCliente(dni);
@@ -57,7 +59,8 @@ async function registrarAsistencia(dni) {
     } catch (e) {
       console.warn("No se pudo enviar correo de notificación:", e.message);
     }
-
+*/
+    await publicarAsistenciaCreada(asistencia);
     return asistencia;
   } catch (error) {
     throw error;

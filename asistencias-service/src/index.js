@@ -4,6 +4,8 @@ import dotenv from "dotenv";
 import axios from "axios";
 import { testConnection, createTables } from "./db/db.js";
 import asistenciaRoutes from "./routes/AsistenciaRoutes.js";
+import { connect } from "./config/rabbitmq.js";
+import { setupPublisher } from "./asistenciaPublisher.js";
 
 dotenv.config();
 
@@ -25,10 +27,19 @@ app.use("/asistencias", asistenciaRoutes);
 
 const PORT = process.env.PORT || 4003;
 
+
+
 async function init() {
   try {
     await testConnection();
     await createTables();
+    // 1. Conectar a RabbitMQ
+    console.log("📡 Conectando a RabbitMQ...");
+    await connect();
+
+    // 2. Configurar el publisher
+    console.log("📤 Configurando publisher...");
+    await setupPublisher();
 
     app.listen(PORT, () => {
       console.log(`Microservicio de Asistencias escuchando en el puerto ${PORT}`);
@@ -60,3 +71,11 @@ async function registerInConsul() {
 }
 
 init();
+
+// Manejo de cierre graceful
+process.on("SIGINT", async () => {
+  console.log("\n⚠️  Cerrando aplicación...");
+  const { closeConnection } = await import("./config/rabbitmq.js");
+  await closeConnection();
+  process.exit(0);
+});

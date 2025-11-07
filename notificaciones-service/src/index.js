@@ -2,6 +2,8 @@ import express from "express";
 import dotenv from "dotenv";
 import axios from "axios";
 import notificacionRoutes from "./routes/notificaciones.js";
+import { connect } from "./config/rabbitmq.js";
+import startClienteConsumer from "./notificacionesConsumer.js";
 
 dotenv.config();
 
@@ -43,6 +45,14 @@ async function registerInConsul() {
     console.error('❌ Error registrando en Consul:', error.message);
   }
 }
+
+// 1. Conectar a RabbitMQ
+    console.log("📡 Conectando a RabbitMQ...");
+    await connect();
+
+    // 2. Configurar el publisher
+    console.log("📤 Configurando publisher...");
+    await startClienteConsumer();
 
 app.listen(PORT, () => {
   console.log(`Microservicio Notificaciones corriendo en puerto ${PORT}`);

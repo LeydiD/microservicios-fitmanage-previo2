@@ -6,6 +6,7 @@ import axios from "axios";
 import db from "./db/db.js";
 import clienteRoutes from "./routes/ClienteRoutes.js";
 import Administrador from "./models/Administrador.js";
+import Entrenador from "./models/Entrenador.js";
 import authRoutes from "./routes/AuthRoutes.js";
 import { connect } from "./config/rabbitmq.js";
 import { setupPublisher } from "./clientePublisher.js";
@@ -36,6 +37,14 @@ async function main() {
         console.log(error.message);
     }
 }
+
+Entrenador.sync({ alter: true })
+  .then(() => {
+    console.log('✅ Tabla entrenador creada/actualizada correctamente');
+  })
+  .catch((error) => {
+    console.error('❌ Error al crear tabla entrenador:', error);
+  });
 
 main();
 

@@ -3,8 +3,7 @@ import AsistenciaService from "../services/AsistenciaService.js";
 export async function registrarAsistencia(req, res) {
   try {
     const asistencia = await AsistenciaService.registrarAsistencia(
-      req.body.id_cliente || req.body.dni || req.body.dni_cliente,
-      req.body.dni_administrador || null
+      req.body.id_cliente || req.body.dni || req.body.dni_cliente
     );
     res.status(200).json(asistencia);
   } catch (error) {
