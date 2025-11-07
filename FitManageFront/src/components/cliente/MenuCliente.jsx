@@ -276,8 +276,8 @@ const MenuCliente = ({ isOpen, setIsOpen }) => {
           <Button text="Asistencias" />
         </Link>
         <Link to="/cliente/registrar-referido" onClick={handleLinkClick}>
-            <Button text="Referidos" />
-          </Link>
+          <Button text="Referidos" />
+        </Link>
         <Link to="/cliente/rutinas" onClick={handleLinkClick}>
           <Button text="Rutinas" />
         </Link>

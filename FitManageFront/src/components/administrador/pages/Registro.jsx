@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Registro.css";
-import { registrarCliente, registrarClienteReferido } from "../../../api/ClienteApi.js";
+import { registrarCliente } from "../../../api/ClienteApi.js";
 import { useModal } from "../../../context/ModalContext.jsx";
 const Registro = () => {
   const { showModal } = useModal();
@@ -14,9 +14,7 @@ const Registro = () => {
     email: "",
     altura: "",
     DNI: "",
-    documento_referido: "",
   });
-  const [esReferido, setEsReferido] = useState(false);
 
   const handleChange = (e) => {
     setFormData({
@@ -28,10 +26,7 @@ const Registro = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const payload = { ...formData };
-      const response = esReferido
-        ? await registrarClienteReferido(payload)
-        : await registrarCliente(payload);
+      const response = await registrarCliente(formData);
       console.log("Cliente registrado con éxito:", response);
       showModal("Éxito", "Registro exitoso", "success");
       setFormData({
@@ -42,7 +37,6 @@ const Registro = () => {
         edad: "",
         peso: "",
         altura: "",
-        documento_referido: "",
       });
     } catch (error) {
       showModal("Error", error.message, "error");
@@ -55,31 +49,10 @@ const Registro = () => {
         <div className="logo-container">
           <img src="/LogoGym.jpeg" alt="Logo Gym" className="gym-logo" />
         </div>
-        <button
-          type="button"
-          className={`btn btn-danger referido-btn ${esReferido ? "active" : ""}`}
-          onClick={() => setEsReferido((v) => !v)}
-        >
-          referido
-        </button>
         <br />
         <h2 className="text-center fw-bold">FORMULARIO DE REGISTRO</h2>
         <br />
         <form onSubmit={handleSubmit}>
-          {esReferido && (
-            <div className="row">
-              <div className="col-md-6">
-                <label>Cliente que refiere (documento)</label>
-                <input
-                  type="text"
-                  name="documento_referido"
-                  className="form-control"
-                  value={formData.documento_referido}
-                  onChange={handleChange}
-                />
-              </div>
-            </div>
-          )}
           <div className="row">
             <div className="col-md-6">
               <label>Nombre Completo</label>
