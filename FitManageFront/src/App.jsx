@@ -27,6 +27,7 @@ import Asistencias from "./components/cliente/pages/Asistencias.jsx";
 // import Rutinas from "./components/cliente/pages/Rutinas.jsx";
 // import Notificaciones from "./components/cliente/pages/Notificaciones.jsx";
 // import EnviarNotificacion from "./components/administrador/pages/EnviarNotificacion.jsx";
+import RegistrarReferido from "./components/cliente/pages/RegistrarReferido.jsx";
 
 const App = () => {
   return (
@@ -70,6 +71,7 @@ const App = () => {
               { <Route path="asistencias" element={<Asistencias />} />}
               {/* <Route path="rutinas" element={<Rutinas />} /> */}
               {/* <Route path="notificaciones" element={<Notificaciones />} /> */}
+              <Route path="registrar-referido" element={<RegistrarReferido />} />
             </Route>
           </Route>
 
