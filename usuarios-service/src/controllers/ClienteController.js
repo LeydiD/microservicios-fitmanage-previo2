@@ -134,7 +134,7 @@ export async function registrarClienteReferido(req, res) {
       return res.status(400).json({ message: "Todos los campos son obligatorios" });
     }
 
-    const nuevoCliente = await ClienteServices.registrarClienteReferido(DNI, documento_referido, nombre, email, telefono, peso, altura, edad );
+    const nuevoCliente = await ClienteServices.registrarClienteReferido(DNI, documento_referido, nombre, email, telefono, peso, altura, edad);
     const token = jwt.sign({ DNI }, process.env.JWT_SECRET, { expiresIn: "72h" });
     const link = `${process.env.FRONTEND_URL}/crear-contrasena/${token}`;
 
@@ -167,7 +167,7 @@ export async function registrarClienteReferido(req, res) {
     res.status(201).json(nuevoCliente);
   } catch (error) {
     console.error("Error al registrar cliente:", error);
-    res.status(500).json({ message: "Error interno del servidor" });
+    res.status(500).json({ message: error.message });
   }
 };
 export async function obtenerReferidos(req, res) {
